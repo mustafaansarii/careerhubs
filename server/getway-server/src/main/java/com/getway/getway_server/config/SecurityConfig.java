@@ -15,7 +15,7 @@ public class SecurityConfig {
         http
             .csrf().disable()
             .authorizeExchange()
-            .pathMatchers("/question-sheet/**", "/user-service/**","/question/**", "/resume/**").permitAll()
+            .pathMatchers("/question-sheet/**", "/user-service/**","/question/**", "/resume/**","/roadmap/**","/gen/**").permitAll()
             .anyExchange().authenticated()
             .and()
             .httpBasic();

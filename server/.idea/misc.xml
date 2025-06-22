@@ -9,6 +9,8 @@
         <option value="$PROJECT_DIR$/getway-server/pom.xml" />
         <option value="$PROJECT_DIR$/question-sheet/pom.xml" />
         <option value="$PROJECT_DIR$/resume-service/pom.xml" />
+        <option value="$PROJECT_DIR$/roadmap-service/pom.xml" />
+        <option value="$PROJECT_DIR$/gen-service/pom.xml" />
       </list>
     </option>
   </component>
