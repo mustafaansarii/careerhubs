@@ -18,6 +18,8 @@
 **/temp
 **/tmp
 
-# IDE/editor folders
-.idea/
-.vscode/
+# Docker files
+**/Dockerfile
+
+
+**/docker-compose.yml
