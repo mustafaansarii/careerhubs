@@ -1,2 +1,14 @@
-server/eureka_server/src/main/resources/application.yml
-server/eureka_server/Dockerfile
+**/Dockerfile
+**/application.yml
+
+**/target
+
+**/build
+
+**/.env
+
+**/logs
+
+**/node_modules
+
+**/target
