@@ -1,7 +1,23 @@
+# IDE/editor folders
+.idea/
+.vscode/
+
+# Configuration files
 **/application.yml
 **/*.yml
 **/*.properties
-.idea
-.vscode
+
+# Build output
 **/target
 **/build
+
+# Log files
+**/*.log
+
+# Temporary files
+**/temp
+**/tmp
+
+# IDE/editor folders
+.idea/
+.vscode/
