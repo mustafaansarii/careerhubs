@@ -1,0 +1,106 @@
+version: '3.8'
+
+networks:
+  careerhubs-net:
+    driver: bridge
+
+volumes:
+  mysql-data:
+
+services:
+  # Database Service
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: Mustafa@_1992
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - "3307:3306"  # Change this line
+    networks:
+      - careerhubs-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+
+  # Eureka Service Discovery
+  eureka-server:
+    build: ./eureka_server
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - careerhubs-net
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+
+  # API Gateway
+  gateway-server:
+    build: ./getway-server
+    container_name: gateway-server
+    ports:
+      - "8080:8080"
+    environment:
+      DB_PASSWORD: Mustafa@_1992
+    networks:
+      - careerhubs-net
+    depends_on:
+      - eureka-server
+
+  # Microservices
+  gen-service:
+    build: ./gen-service
+    container_name: gen-service
+    environment:
+      DB_PASSWORD: Mustafa@_1992
+    networks:
+      - careerhubs-net
+    depends_on:
+      - eureka-server
+
+  question-sheet:
+    build: ./question-sheet
+    container_name: question-sheet
+    ports:
+      - "5002:5002"
+    environment:
+      DB_PASSWORD: Mustafa@_1992
+    networks:
+      - careerhubs-net
+    depends_on:
+      - mysql-db
+      - eureka-server
+
+  resume-service:
+    build: ./resume-service
+    container_name: resume-service
+    environment:
+      DB_PASSWORD: Mustafa@_1992
+    networks:
+      - careerhubs-net
+    depends_on:
+      - eureka-server
+
+  roadmap-service:
+    build: ./roadmap-service
+    container_name: roadmap-service
+    environment:
+      DB_PASSWORD: Mustafa@_1992
+    networks:
+      - careerhubs-net
+    depends_on:
+      - eureka-server
+
+  user-service:
+    build: ./user_service
+    container_name: user-service
+    environment:
+      DB_PASSWORD: Mustafa@_1992
+    networks:
+      - careerhubs-net
+    depends_on:
+      - eureka-server
