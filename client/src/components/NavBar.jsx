@@ -109,7 +109,7 @@ export default function NavBar() {
           <nav aria-label="Global" className="flex items-center justify-between p-5 lg:px-8 max-w-7xl mx-auto sm:p-3">
             <div className="flex lg:flex-1">
               <Link to="/" className="-m-1 p-1 flex items-center space-x-2">
-                <div className="w-7 h-7 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
+                <div className="w-7 h-7 bg-gradient-to-r from-blue-600 to-indigo-900 rounded-lg flex items-center justify-center">
                   <span className="text-white font-bold text-lg">C</span>
                 </div>
                 <div className="text-lg font-bold bg-gradient-to-r dark:from-blue-600 dark:to-white bg-clip-text text-transparent from-blue-600 to-gray-900">

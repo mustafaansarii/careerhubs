@@ -1,4 +1,4 @@
-import config from '../../config';
+
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import NavBar from '../../components/NavBar';
@@ -16,22 +16,22 @@ const TemplateList = () => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const templatesPerPage = 10;
-  const api = config.Backend_Api;
+
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem('access_token');
-        
-        const templatesResponse = await axios.get(`${api}/api/resume/templates/`, {
+
+        const templatesResponse = await axios.get('/api/resume/templates/', {
           headers: { Authorization: `Bearer ${token}` }
         });
-        
-        const savedResponse = await axios.get(`${api}/api/resume/resumes/`, {
+
+        const savedResponse = await axios.get('/api/resume/resumes/', {
           headers: { Authorization: `Bearer ${token}` }
         });
-        
+
         setTemplates(templatesResponse.data);
         setSavedTemplates(savedResponse.data);
       } catch (error) {
@@ -47,19 +47,19 @@ const TemplateList = () => {
     };
 
     fetchData();
-  }, [api, navigate]);
+  }, [navigate]);
 
   const handleDeleteResume = async (templateId) => {
     try {
       const token = localStorage.getItem('access_token');
       const savedTemplate = savedTemplates.find(t => t.template.template_id === templateId);
-      
+
       if (!savedTemplate) {
         toast.error('Template not found');
         return;
       }
 
-      await axios.delete(`${api}/api/resume/delete-resume/`, {
+      await axios.delete('/api/resume/delete-resume/', {
         headers: { Authorization: `Bearer ${token}` },
         data: { resume_id: savedTemplate.id }
       });
@@ -100,7 +100,7 @@ const TemplateList = () => {
 
       if (!isSaved) {
         try {
-          await axios.post(`${api}/api/resume/resumes/`, {
+          await axios.post('/api/resume/resumes/', {
             template_id: templateId
           }, {
             headers: { Authorization: `Bearer ${token}` }
@@ -119,7 +119,7 @@ const TemplateList = () => {
         }
 
         // Refresh saved templates after creation
-        const savedResponse = await axios.get(`${api}/api/resume/resumes/`, {
+        const savedResponse = await axios.get('/api/resume/resumes/', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setSavedTemplates(savedResponse.data);
@@ -164,7 +164,7 @@ const TemplateList = () => {
 
       for (let i = 1; i <= totalPages; i++) {
         if (
-          i === 1 || 
+          i === 1 ||
           i === totalPages ||
           i === currentPage ||
           (currentPage - i >= -delta && currentPage - i <= delta)
@@ -288,14 +288,14 @@ const TemplateList = () => {
         </div>
 
         <div className="text-center mb-6 sm:mb-10">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-blue-600 to-gray-900 dark:from-blue-600 dark:to-white bg-clip-text text-transparent leading-tight">
-              Professional Resume Templates
-            </h1>
-            <p className="mt-2 sm:mt-3 text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Choose from our collection of ATS-optimized, professionally designed templates tailored for various industries
-            </p>
-          </div>
-        
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-blue-600 to-gray-900 dark:from-blue-600 dark:to-white bg-clip-text text-transparent leading-tight">
+            Professional Resume Templates
+          </h1>
+          <p className="mt-2 sm:mt-3 text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            Choose from our collection of ATS-optimized, professionally designed templates tailored for various industries
+          </p>
+        </div>
+
         {loading ? (
           <SkeletonLoader />
         ) : (
@@ -303,16 +303,15 @@ const TemplateList = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
               {currentTemplates.map((template) => {
                 const isSaved = savedTemplates.some(t => t.template.template_id === template.template_id);
-                
+
                 return (
-                  <div key={template.template_id} className={`bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow group relative z-10 ${
-                    isSaved ? 'md:hover:border-2 border-green-500' : 'md:hover:border-2 border-blue-500'
-                  } border-2 md:border-0`}>
+                  <div key={template.template_id} className={`bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow group relative z-10 ${isSaved ? 'md:hover:border-2 border-green-500' : 'md:hover:border-2 border-blue-500'
+                    } border-2 md:border-0`}>
                     <div className="relative z-10">
-                     
+
                       <div className="relative z-10" onClick={() => handleEditResume(template.template_id)}>
-                        <img 
-                          src={template.template_img_url} 
+                        <img
+                          src={template.template_img_url}
                           alt={template.name}
                           className="w-full h-auto object-contain transition-transform duration-300 group-hover:scale-105 cursor-pointer"
                           loading="lazy"
@@ -320,7 +319,7 @@ const TemplateList = () => {
                           height="500"
                         />
                       </div>
-                    </div>                  
+                    </div>
                     <div className="p-2 sm:p-2 ">
                       <h2 className="text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">{template.name}</h2>
                       <div className="flex justify-center gap-2">

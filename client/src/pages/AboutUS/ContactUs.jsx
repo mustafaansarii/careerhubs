@@ -2,7 +2,6 @@ import NavBar from "../../components/NavBar";
 import Footer from "../../components/Footer";
 import { FaHome, FaMapMarkerAlt, FaPhone, FaEnvelope, FaTwitter, FaLinkedin, FaFacebook } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import config from "../../config";
 import { useState } from "react";
 import axios from "axios";
 
@@ -22,7 +21,7 @@ export default function ContactUs() {
 
     try {
       const response = await axios.post(
-        config.Backend_Api + "/api/careerhub/api/contact/",
+        "/api/careerhub/api/contact/",
         formData
       );
       setSubmitStatus({ success: true, message: "Message sent successfully!" });
@@ -60,7 +59,7 @@ export default function ContactUs() {
               </li>
             </ol>
           </nav>
-          
+
           <div className="rounded-2xl p-6 sm:p-8 lg:p-12 bg-white dark:bg-gray-800 shadow-lg">
             <h1 className="text-3xl sm:text-4xl font-bold mb-6 text-gray-900 dark:text-gray-100 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Contact CareerHub</h1>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
@@ -127,7 +126,7 @@ export default function ContactUs() {
                       <FaPhone className="w-5 h-5 mr-3 text-blue-500" />
                       <p> <a href="tel:+917367817657">+91 73678 17657</a></p>
                     </div>
-                   
+
                   </div>
                 </div>
                 <div className="hidden sm:block p-4 sm:p-6 rounded-xl border border-gray-200 dark:border-gray-700 ">

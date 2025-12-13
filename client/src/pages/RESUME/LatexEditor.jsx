@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import MonacoEditor from "@monaco-editor/react";
-import config from "../../config";
 import { Link, useParams } from "react-router-dom";
 import { FaSync, FaSpinner, FaChevronRight, FaChevronLeft } from "react-icons/fa";
 import { toast } from 'react-hot-toast';
@@ -34,9 +33,9 @@ export default function LatexEditor() {
 
     try {
       const accessToken = localStorage.getItem('access_token');
-      
+
       // Update template
-      await fetch(`${config.Backend_Api}/api/resume/update/`, {
+      await fetch('/api/resume/update/', {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -50,7 +49,7 @@ export default function LatexEditor() {
       });
 
       // Compile template
-      const res = await fetch(`${config.Backend_Api}/api/resume/compile/`, {
+      const res = await fetch('/api/resume/compile/', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -58,12 +57,12 @@ export default function LatexEditor() {
         },
         body: JSON.stringify({ code: latexCode })
       });
-      
+
       if (!res.ok) {
         const errorData = await res.json();
         throw new Error(errorData.message || 'Compilation failed. Please check your LaTeX code.');
       }
-      
+
       const blob = await res.blob();
       setPdfBlobUrl(URL.createObjectURL(blob));
       clearTimeout(timeout);
@@ -79,19 +78,19 @@ export default function LatexEditor() {
     const fetchTemplateData = async () => {
       try {
         const accessToken = localStorage.getItem('access_token');
-        
+
         // First get all templates
-        const templatesResponse = await fetch(`${config.Backend_Api}/api/resume/templates/`, {
+        const templatesResponse = await fetch('/api/resume/templates/', {
           headers: { Authorization: `Bearer ${accessToken}` }
         });
         const templates = await templatesResponse.json();
-        
+
         // Then get saved resumes
-        const savedResponse = await fetch(`${config.Backend_Api}/api/resume/resumes/`, {
+        const savedResponse = await fetch('/api/resume/resumes/', {
           headers: { Authorization: `Bearer ${accessToken}` }
         });
         const savedResumes = await savedResponse.json();
-        
+
         // Find the selected template
         const selectedTemplate = templates.find(t => t.template_id === templateId);
         if (selectedTemplate) {
@@ -102,7 +101,7 @@ export default function LatexEditor() {
             setResumeId(savedResume.id);
           } else {
             // If not saved, create a new resume
-            const createResponse = await fetch(`${config.Backend_Api}/api/resume/resumes/`, {
+            const createResponse = await fetch('/api/resume/resumes/', {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -213,7 +212,7 @@ export default function LatexEditor() {
     <div className="flex h-screen w-full flex-col">
       {/* Top Navbar */}
       <div className="w-full max-w-[1300px] mx-auto py-1 px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-       
+
         {/* Nav Buttons */}
         <div className="w-full sm:w-auto">
           <div className="flex items-center justify-center sm:justify-start gap-2 sm:gap-4 flex-wrap">
@@ -240,7 +239,7 @@ export default function LatexEditor() {
 
         {/* Recompile Button */}
         <div className="w-full sm:w-auto relative group">
-          <button 
+          <button
             onClick={compileLatex}
             disabled={isCompiling}
             className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 px-3 py-1.5 text-sm text-white hover:from-blue-700 hover:to-indigo-700 disabled:opacity-70 transition-all duration-200 shadow-md hover:shadow-lg"
@@ -257,12 +256,12 @@ export default function LatexEditor() {
               </>
             )}
           </button>
-          
+
         </div>
 
         {/* Right: My Resume Button */}
         <div className="w-full sm:w-auto">
-          
+
         </div>
       </div>
       <div className="w-full border-b border-gray-300 dark:border-gray-600"></div>
@@ -270,7 +269,7 @@ export default function LatexEditor() {
       {/* Main Content */}
       <div className={`flex flex-1 flex-col ${isMobile ? '' : 'md:flex-row'}`}>
         {/* Left: Editor */}
-        <div 
+        <div
           className="flex h-[400px] md:h-full flex-col border-b md:border-r border-gray-700 overflow-hidden relative"
           style={{ width: isMobile ? '100%' : `${editorWidth}%` }}
         >
@@ -282,7 +281,7 @@ export default function LatexEditor() {
                 defaultLanguage="javascript"
                 value={latexCode}
                 onChange={(value) => setLatexCode(value)}
-                options={{ 
+                options={{
                   minimap: { enabled: false },
                   scrollBeyondLastLine: false,
                   wordWrap: 'on',
@@ -325,8 +324,8 @@ export default function LatexEditor() {
               </div>
             )}
             {pdfBlobUrl ? (
-              <iframe 
-                src={pdfBlobUrl} 
+              <iframe
+                src={pdfBlobUrl}
                 className="h-full w-full"
                 title="PDF Preview"
                 onLoad={handlePdfLoad}

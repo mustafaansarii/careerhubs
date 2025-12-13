@@ -3,7 +3,6 @@ import NProgress from 'nprogress';
 import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
 import ReactMarkdown from 'react-markdown';
-import config from '../config';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
@@ -21,15 +20,15 @@ export const useTutorialLogic = () => {
         setIsLoading(true);
         setProgress(0);
         NProgress.start();
-        
+
         try {
-            const response = await fetch(`${config.Backend_Api}/api/careerhub/api/generate/`, {
+            const response = await fetch('/api/careerhub/api/generate', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('access_token')}`
                 },
-                body: JSON.stringify({ 
+                body: JSON.stringify({
                     prompt: prompt,
                     format: 'markdown',
                     mobile_optimized: true
@@ -43,7 +42,7 @@ export const useTutorialLogic = () => {
             const data = await response.json();
             clearInterval(interval);
             setProgress(100);
-            
+
             return data.response || 'No content received from the server.';
         } catch (error) {
             throw error;
@@ -97,7 +96,7 @@ export const useTutorialLogic = () => {
     const handleCopyCode = (code, language, button) => {
         const originalText = button.textContent;
         const originalClass = button.className;
-        
+
         const showCopySuccess = () => {
             button.textContent = '✅ Copied!';
             button.classList.add('bg-green-500', 'dark:bg-green-600');
@@ -139,7 +138,7 @@ export const useTutorialLogic = () => {
                                     </div>
                                     <button
                                         onClick={(e) => handleCopyCode(
-                                            String(children).replace(/\n$/, ""), 
+                                            String(children).replace(/\n$/, ""),
                                             language,
                                             e.currentTarget
                                         )}
@@ -148,15 +147,17 @@ export const useTutorialLogic = () => {
                                         Copy
                                     </button>
                                 </div>
-                                <SyntaxHighlighter 
-                                    style={vscDarkPlus} 
+                                <SyntaxHighlighter
+                                    style={vscDarkPlus}
                                     language={language.toLowerCase()}
                                     showLineNumbers={!isMobile}
                                     wrapLines={false}
-                                    lineProps={{ style: { 
-                                        whiteSpace: 'pre',
-                                        fontSize: isMobile ? '0.7rem' : '0.8rem'
-                                    }}}
+                                    lineProps={{
+                                        style: {
+                                            whiteSpace: 'pre',
+                                            fontSize: isMobile ? '0.7rem' : '0.8rem'
+                                        }
+                                    }}
                                     customStyle={{
                                         borderRadius: '0.5rem',
                                         padding: isMobile ? '0.75rem 0.5rem' : '1rem',

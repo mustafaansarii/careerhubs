@@ -5,7 +5,6 @@ import { FaHome, FaRocket, FaCheckCircle } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Modal from 'react-modal';
-import config from '../config';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -94,9 +93,9 @@ const Resume_ATS = () => {
             const token = localStorage.getItem('access_token');
             const formData = new FormData();
             formData.append('file', file);
-            
+
             const response = await axios.post(
-                `${config.Backend_Api}/api/careerhub/api/extract-text/`,
+                '/api/careerhub/api/extract-text/',
                 formData,
                 {
                     headers: {
@@ -124,34 +123,34 @@ const Resume_ATS = () => {
             setParsingStatus('Parsing resume...');
             setShowGetStartedModal(false);
             const token = localStorage.getItem('access_token');
-            
+
             if (!resumeFile) {
                 throw new Error('Please upload a resume file');
             }
 
             const parsedText = await parseResume(resumeFile);
-            
+
             const dynamicPrompt = resume_analyse_prompt
                 .replace(/\[RESUME\]/g, parsedText)
                 .replace(/\[FIELD\]/g, selectedField)
                 .replace(/\[LEVEL\]/g, selectedLevel);
 
             const response = await axios.post(
-                `${config.Backend_Api}/api/careerhub/api/generate/`,
-                { 
+                '/api/careerhub/api/generate/',
+                {
                     prompt: dynamicPrompt,
                     resume: parsedText,
                     field: selectedField,
                     experienceLevel: selectedLevel
                 },
                 {
-                    headers: { 
+                    headers: {
                         Authorization: `Bearer ${token}`,
                         'Content-Type': 'application/json'
                     }
                 }
             );
-            
+
             if (response.data && response.data.response) {
                 try {
                     // Clean the response by removing Markdown code block syntax
@@ -161,12 +160,12 @@ const Resume_ATS = () => {
                         .trim();
 
                     const parsedData = JSON.parse(cleanedResponse);
-                    
+
                     // Validate the JSON structure
                     if (!parsedData.ats_score || !parsedData.keyword_analysis) {
                         throw new Error('Invalid analysis data received');
                     }
-                    
+
                     setAnalysisResult(parsedData);
                 } catch (error) {
                     console.error('JSON parsing error:', error);
@@ -239,7 +238,7 @@ const Resume_ATS = () => {
                     <div className="w-full px-4 sm:px-6 lg:px-8 mx-auto max-w-7xl">
                         {/* Analysis Results Section */}
                         <div className="w-full">
-                            <motion.div 
+                            <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 sm:p-8 border border-gray-100 dark:border-gray-700"
@@ -275,7 +274,7 @@ const Resume_ATS = () => {
                                                 printWindow.style.height = '0';
                                                 printWindow.style.border = '0';
                                                 document.body.appendChild(printWindow);
-                                                
+
                                                 const doc = printWindow.contentWindow.document;
                                                 doc.open();
                                                 doc.write(`
@@ -293,10 +292,10 @@ const Resume_ATS = () => {
                                                     </html>
                                                 `);
                                                 doc.close();
-                                                
+
                                                 printWindow.contentWindow.focus();
                                                 printWindow.contentWindow.print();
-                                                
+
                                                 setTimeout(() => {
                                                     document.body.removeChild(printWindow);
                                                 }, 1000);
@@ -305,7 +304,7 @@ const Resume_ATS = () => {
                                             title="Print Analysis"
                                         >
                                             <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-gray-500 dark:text-gray-400" viewBox="0 0 24 24" fill="currentColor">
-                                                <path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/>
+                                                <path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z" />
                                             </svg>
                                         </button>
                                         <button
@@ -320,8 +319,8 @@ const Resume_ATS = () => {
                                 {analysisResult ? (
                                     <div className="printable-content">
                                         <div className="">
-                                           
-                                            
+
+
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                                 <div className="bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg">
                                                     <h3 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">ATS Score</h3>
@@ -395,7 +394,7 @@ const Resume_ATS = () => {
                 ) : (
                     <>
                         {/* Hero Section */}
-                        <motion.div 
+                        <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             className="flex flex-col md:flex-row items-center gap-4 md:gap-12 px-4 sm:px-6"
@@ -408,15 +407,15 @@ const Resume_ATS = () => {
                                     Get AI-powered resume analysis to ensure your resume passes through Applicant Tracking Systems and lands you more interviews.
                                 </p>
                                 <div className="md:hidden w-full mt-4">
-                                    <img 
-                                        src="./ats.png" 
-                                        alt="Resume Analysis" 
+                                    <img
+                                        src="./ats.png"
+                                        alt="Resume Analysis"
                                         className="w-full h-auto rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300"
                                         loading="lazy"
                                     />
                                 </div>
                                 <div className="flex flex-col sm:flex-row gap-3 mt-4">
-                                    <button 
+                                    <button
                                         onClick={() => setShowGetStartedModal(true)}
                                         className="rounded-full border border-blue-600 dark:border-white px-6 py-2 bg-gradient-to-r dark:from-blue-600 dark:to-white bg-clip-text text-transparent from-blue-600 to-gray-900 hover:bg-blue-600 hover:text-blue-600 dark:hover:bg-white dark:hover:text-blue-600 transition-colors cursor-pointer"
                                     >
@@ -426,18 +425,18 @@ const Resume_ATS = () => {
                                 <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-sm md:text-base mt-3">
                                     Trusted by professionals from top companies to optimize their resumes
                                 </p>
-                                
-                                
+
+
                             </div>
                             <div className="flex-1 order-1 md:order-2 hidden md:block">
-                                <img 
-                                    src="./ats.png" 
-                                    alt="Resume Analysis" 
+                                <img
+                                    src="./ats.png"
+                                    alt="Resume Analysis"
                                     className="w-full h-auto rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-300"
                                     loading="lazy"
                                 />
                             </div>
-                            
+
                         </motion.div>
                         {/* Enhanced Testimonials Section */}
                         <div className="mt-20 px-4 sm:px-6 lg:px-8">
@@ -445,14 +444,14 @@ const Resume_ATS = () => {
                                 What Our Users Are Saying
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                <motion.div 
+                                <motion.div
                                     whileHover={{ scale: 1.02 }}
                                     className="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-shadow border border-gray-100 dark:border-gray-700"
                                 >
                                     <div className="flex items-center space-x-3 mb-4">
-                                        <img 
-                                            src="https://randomuser.me/api/portraits/women/44.jpg" 
-                                            alt="Sarah L." 
+                                        <img
+                                            src="https://randomuser.me/api/portraits/women/44.jpg"
+                                            alt="Sarah L."
                                             className="w-12 h-12 rounded-full"
                                         />
                                         <div>
@@ -470,14 +469,14 @@ const Resume_ATS = () => {
                                     </div>
                                 </motion.div>
 
-                                <motion.div 
+                                <motion.div
                                     whileHover={{ scale: 1.02 }}
                                     className="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-shadow border border-gray-100 dark:border-gray-700"
                                 >
                                     <div className="flex items-center space-x-3 mb-4">
-                                        <img 
-                                            src="https://randomuser.me/api/portraits/men/32.jpg" 
-                                            alt="Michael T." 
+                                        <img
+                                            src="https://randomuser.me/api/portraits/men/32.jpg"
+                                            alt="Michael T."
                                             className="w-12 h-12 rounded-full"
                                         />
                                         <div>
@@ -495,14 +494,14 @@ const Resume_ATS = () => {
                                     </div>
                                 </motion.div>
 
-                                <motion.div 
+                                <motion.div
                                     whileHover={{ scale: 1.02 }}
                                     className="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-shadow border border-gray-100 dark:border-gray-700"
                                 >
                                     <div className="flex items-center space-x-3 mb-4">
-                                        <img 
-                                            src="https://randomuser.me/api/portraits/women/68.jpg" 
-                                            alt="Emily R." 
+                                        <img
+                                            src="https://randomuser.me/api/portraits/women/68.jpg"
+                                            alt="Emily R."
                                             className="w-12 h-12 rounded-full"
                                         />
                                         <div>
@@ -623,11 +622,11 @@ const Resume_ATS = () => {
                                         placeholder="Search or type a new field..."
                                         className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100"
                                     />
-                                    
+
                                     {showOptions && (
                                         <div className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
                                             {predefinedFields
-                                                .filter(field => 
+                                                .filter(field =>
                                                     field.toLowerCase().includes(searchQuery.toLowerCase())
                                                 )
                                                 .map((field) => (
@@ -643,7 +642,7 @@ const Resume_ATS = () => {
                                                         <span className="block truncate">{field}</span>
                                                     </div>
                                                 ))}
-                                            
+
                                             {searchQuery.trim() && !predefinedFields.some(f => f.toLowerCase() === searchQuery.trim().toLowerCase()) && (
                                                 <div
                                                     onClick={() => {
@@ -664,8 +663,8 @@ const Resume_ATS = () => {
 
                             <div>
                                 <label className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-                                    <input 
-                                        type="file" 
+                                    <input
+                                        type="file"
                                         className="hidden"
                                         accept=".pdf"
                                         onChange={handleFileUpload}
@@ -674,7 +673,7 @@ const Resume_ATS = () => {
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                                     </svg>
                                     <p className="text-gray-600 dark:text-gray-300 text-center">
-                                        Upload your resume (PDF only)<br/>
+                                        Upload your resume (PDF only)<br />
                                         Max 2MB file size
                                     </p>
                                 </label>
@@ -685,7 +684,7 @@ const Resume_ATS = () => {
                                 )}
                             </div>
                         </div>
-                        
+
                         {isLoading && (
                             <div className="mt-4 flex items-center space-x-2">
                                 <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>

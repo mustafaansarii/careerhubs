@@ -1,6 +1,5 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import axios from 'axios';
-import config from '../config'
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import useSWR from 'swr';
@@ -104,7 +103,7 @@ const updateProfileName = async (newName) => {
   try {
     const token = localStorage.getItem('access_token');
     const response = await axios.put(
-      `${config.Backend_Api}/api/auth/profile/`,
+      `/api/auth/profile/`,
       { full_name: newName },
       {
         headers: {
@@ -177,7 +176,7 @@ const LoadingFallback = () => (
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { data: profileData, error, mutate } = useSWR(`${config.Backend_Api}/api/auth/profile/`, fetchProfile, {
+  const { data: profileData, error, mutate } = useSWR(`/api/auth/profile/`, fetchProfile, {
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
     refreshWhenOffline: false,
@@ -188,21 +187,21 @@ const Profile = () => {
     shouldRetryOnError: false,
     keepPreviousData: true
   });
-  
-  const { data: favoritesData, mutate: mutateFavorites } = useSWR(`${config.Backend_Api}/api/careerhub/api/favorites/`, fetchFavorites, {
+
+  const { data: favoritesData, mutate: mutateFavorites } = useSWR(`/api/careerhub/api/favorites/`, fetchFavorites, {
     revalidateOnFocus: false,
     shouldRetryOnError: false
   });
-  
+
   const { data: completedQuestions, mutate: mutateCompleted } = useSWR(
-    `${config.Backend_Api}/api/careerhub/api/completed-questions/`, 
+    `/api/careerhub/api/completed-questions/`,
     fetchCompletedQuestions,
     {
       revalidateOnFocus: false,
       shouldRetryOnError: false
     }
   );
-  
+
   const [editMode, setEditMode] = useState(false);
   const [newName, setNewName] = useState('');
   const [updating, setUpdating] = useState(false);
@@ -247,7 +246,7 @@ const Profile = () => {
       if (isAlreadyFavorite) {
         // If already in favorites, remove it
         await axios.post(
-          `${config.Backend_Api}/api/careerhub/questions/${id}/toggle_favorite/`,
+          `/api/careerhub/questions/${id}/toggle_favorite/`,
           {},
           {
             headers: {
@@ -264,7 +263,7 @@ const Profile = () => {
       } else {
         // If not in favorites, add it
         await axios.post(
-          `${config.Backend_Api}/api/careerhub/questions/${id}/toggle_favorite/`,
+          `/api/careerhub/questions/${id}/toggle_favorite/`,
           {},
           {
             headers: {
@@ -304,17 +303,17 @@ const Profile = () => {
       setLoadingCompletedId(id);
       const token = localStorage.getItem('access_token');
       await axios.post(
-        `${config.Backend_Api}/api/careerhub/questions/${id}/toggle_done/`,
+        `/api/careerhub/questions/${id}/toggle_done/`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      
+
       // Optimistic update for completed questions
       mutateCompleted(data => ({
         ...data,
         completed_questions: data.completed_questions.filter(q => q.id !== id)
       }), false);
-      
+
     } catch (error) {
       console.error('Error toggling completed:', error);
       if (error.response && error.response.status === 401) {
@@ -333,7 +332,7 @@ const Profile = () => {
     try {
       const token = localStorage.getItem('access_token');
       await axios.post(
-        `${config.Backend_Api}/api/careerhub/questions/${id}/toggle_done/`,
+        `/api/careerhub/questions/${id}/toggle_done/`,
         {},
         {
           headers: {
@@ -367,7 +366,7 @@ const Profile = () => {
     try {
       const token = localStorage.getItem('access_token');
       await axios.post(
-        `${config.Backend_Api}/api/careerhub/resumes/${id}/toggle_favorite/`,
+        `/api/careerhub/resumes/${id}/toggle_favorite/`,
         {},
         {
           headers: {
@@ -401,7 +400,7 @@ const Profile = () => {
     try {
       const token = localStorage.getItem('access_token');
       await axios.post(
-        `${config.Backend_Api}/api/careerhub/roadmaps/${id}/toggle_favorite/`,
+        `/api/careerhub/roadmaps/${id}/toggle_favorite/`,
         {},
         {
           headers: {
@@ -548,7 +547,7 @@ const Profile = () => {
       },
       x: {
         grid: { color: '#E5E7EB' },
-        ticks: { 
+        ticks: {
           color: '#6B7280',
           font: { size: 12 },
           callback: (value) => {
@@ -641,7 +640,7 @@ const Profile = () => {
               <li aria-current="page">
                 <div className="flex items-center">
                   <svg className="w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4"/>
+                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4" />
                   </svg>
                   <span className="ml-1 font-medium text-gray-500 md:ml-2 dark:text-gray-400">Profile</span>
                 </div>
@@ -711,7 +710,7 @@ const Profile = () => {
               <li aria-current="page">
                 <div className="flex items-center">
                   <svg className="w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4"/>
+                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4" />
                   </svg>
                   <span className="ml-1 font-medium text-gray-500 md:ml-2 dark:text-gray-400">Profile</span>
                 </div>
@@ -720,13 +719,13 @@ const Profile = () => {
           </nav>
           <div className="max-w-7xl mx-auto">
             <div className="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm sm:shadow-lg p-4 sm:p-6 md:p-8 border border-gray-100 dark:border-gray-700">
-              <motion.h1 
+              <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-white mb-4 sm:mb-8 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 Your Career Journey at a Glance
               </motion.h1>
-              
+
               {profileData && (
                 <div className="space-y-4 sm:space-y-8">
                   <Suspense fallback={<LoadingFallback />}>
@@ -741,9 +740,9 @@ const Profile = () => {
                         handleUpdateName={handleUpdateName}
                       />
                     </ErrorBoundary>
-                    
+
                     <ErrorBoundary>
-                      <Distributions 
+                      <Distributions
                         progressChartData={progressChartData}
                         topicDistributionData={topicDistributionData}
                       />

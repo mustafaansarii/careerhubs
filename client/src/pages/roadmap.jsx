@@ -1,6 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
-import config from '../config';
 import { motion } from 'framer-motion';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
@@ -62,7 +61,7 @@ const Roadmap = () => {
     const fetchTemplates = async () => {
       try {
         const token = localStorage.getItem('access_token')
-        const response = await axios.get(`${config.Backend_Api}/api/careerhub/roadmaps/`, {
+        const response = await axios.get('/api/careerhub/roadmaps/', {
           headers: { Authorization: `Bearer ${token}` }
         })
         setRoadmaps(response.data)
@@ -91,7 +90,7 @@ const Roadmap = () => {
       setRoadmaps(prev => prev.map(t =>
         t.id === id ? { ...t, is_favorite: null, isBuffering: true } : t
       ))
-      await axios.post(`${config.Backend_Api}/api/careerhub/roadmaps/${id}/toggle_favorite/`, null, {
+      await axios.post(`/api/careerhub/roadmaps/${id}/toggle_favorite/`, null, {
         headers: { Authorization: `Bearer ${token}` }
       })
       setRoadmaps(prev => prev.map(t =>
@@ -126,21 +125,21 @@ const Roadmap = () => {
 
       setIsGenerating(true);
       const token = localStorage.getItem('access_token');
-      
+
       console.log('Generating roadmap for field:', field);
       console.log('Prompt:', prompt.replace('{selectedField}', field));
 
       const response = await axios.post(
-        `${config.Backend_Api}/api/careerhub/api/generate/`,
+        '/api/careerhub/api/generate/',
         { prompt: prompt.replace('{selectedField}', field) },
         {
-          headers: { 
+          headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json'
           }
         }
       );
-      
+
       if (response.status === 200) {
         setGeneratedRoadmap({
           title: `AI Generated Roadmap for ${field}`,
@@ -196,27 +195,27 @@ const Roadmap = () => {
             >
               {/* Shimmer Effect */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 dark:via-slate-700/30 to-transparent animate-shimmer" />
-              
+
               <div className="p-6 h-full flex flex-col space-y-4">
                 {/* Title */}
                 <div className="h-6 bg-gray-200 dark:bg-slate-700 rounded-full w-3/4" />
-                
+
                 {/* Description */}
                 <div className="space-y-2 flex-1">
                   <div className="h-3 bg-gray-200 dark:bg-slate-700 rounded-full w-full" />
                   <div className="h-3 bg-gray-200 dark:bg-slate-700 rounded-full w-5/6" />
                   <div className="h-3 bg-gray-200 dark:bg-slate-700 rounded-full w-2/3" />
                 </div>
-                
+
                 {/* Tags */}
                 <div className="flex gap-2">
                   <div className="h-5 bg-gray-200 dark:bg-slate-700 rounded-full w-16" />
                   <div className="h-5 bg-gray-200 dark:bg-slate-700 rounded-full w-20" />
                 </div>
-                
+
                 {/* Progress Bar */}
                 <div className="h-2 bg-gray-200 dark:bg-slate-700 rounded-full w-full" />
-                
+
                 {/* Button */}
                 <div className="h-10 bg-gray-200 dark:bg-slate-700 rounded-lg" />
               </div>
@@ -227,11 +226,11 @@ const Roadmap = () => {
         <Suspense fallback={
           <div className="flex flex-col justify-center items-center min-h-[calc(100vh-8rem)] gap-4">
             <motion.div
-              animate={{ 
+              animate={{
                 rotate: [0, 180, 360],
                 scale: [1, 1.1, 1]
               }}
-              transition={{ 
+              transition={{
                 duration: 1.5,
                 repeat: Infinity,
                 ease: "easeInOut"
@@ -272,7 +271,7 @@ const Roadmap = () => {
             {/* Enhanced Hero Section */}
             <div className="text-center mb-12 sm:mb-20 space-y-8 px-2">
               <div className="relative inline-block">
-                <motion.h1 
+                <motion.h1
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="text-4xl sm:text-6xl font-bold mb-6 bg-gradient-to-r dark:from-blue-600 dark:to-white bg-clip-text text-transparent from-blue-600 to-gray-900 relative z-10"
@@ -309,7 +308,7 @@ const Roadmap = () => {
                       <div className="absolute z-20 mt-2 w-full bg-white dark:bg-slate-800 rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-slate-700 transform origin-top transition-all duration-200 scale-95 opacity-0 group-focus-within:scale-100 group-focus-within:opacity-100">
                         <div className="max-h-64 overflow-y-auto">
                           {predefinedFields
-                            .filter(field => 
+                            .filter(field =>
                               field.toLowerCase().includes(selectedField.toLowerCase())
                             )
                             .map((field) => (
@@ -377,7 +376,7 @@ const Roadmap = () => {
                 <div className="animate-pulse space-y-6">
                   {/* Title */}
                   <div className="h-8 bg-gray-200 dark:bg-slate-700 rounded w-3/4 sm:w-1/2 mb-6"></div>
-                  
+
                   {/* Content Blocks */}
                   <div className="space-y-3">
                     <div className="h-4 bg-gray-200 dark:bg-slate-700 rounded w-full"></div>
@@ -385,20 +384,20 @@ const Roadmap = () => {
                     <div className="h-4 bg-gray-200 dark:bg-slate-700 rounded w-5/6"></div>
                     <div className="h-4 bg-gray-200 dark:bg-slate-700 rounded w-3/4"></div>
                   </div>
-                  
+
                   {/* Section Header */}
                   <div className="h-6 bg-gray-200 dark:bg-slate-700 rounded w-1/3 mt-8"></div>
-                  
+
                   {/* List Items */}
                   <div className="space-y-2">
                     <div className="h-4 bg-gray-200 dark:bg-slate-700 rounded w-full"></div>
                     <div className="h-4 bg-gray-200 dark:bg-slate-700 rounded w-5/6"></div>
                     <div className="h-4 bg-gray-200 dark:bg-slate-700 rounded w-2/3"></div>
                   </div>
-                  
+
                   {/* Another Section Header */}
                   <div className="h-6 bg-gray-200 dark:bg-slate-700 rounded w-1/3 mt-8"></div>
-                  
+
                   {/* Table-like Structure */}
                   <div className="grid grid-cols-3 gap-4 mt-4">
                     <div className="h-4 bg-gray-200 dark:bg-slate-700 rounded"></div>
@@ -408,7 +407,7 @@ const Roadmap = () => {
                 </div>
               </div>
             ) : generatedRoadmap ? (
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-8 border border-gray-100 dark:border-slate-700"
@@ -444,7 +443,7 @@ const Roadmap = () => {
                         printWindow.style.height = '0';
                         printWindow.style.border = '0';
                         document.body.appendChild(printWindow);
-                        
+
                         const doc = printWindow.contentWindow.document;
                         doc.open();
                         doc.write(`
@@ -462,10 +461,10 @@ const Roadmap = () => {
                           </html>
                         `);
                         doc.close();
-                        
+
                         printWindow.contentWindow.focus();
                         printWindow.contentWindow.print();
-                        
+
                         // Clean up after printing
                         setTimeout(() => {
                           document.body.removeChild(printWindow);
@@ -475,7 +474,7 @@ const Roadmap = () => {
                       title="Print Roadmap"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-gray-500 dark:text-gray-400" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/>
+                        <path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z" />
                       </svg>
                     </button>
                     <button
@@ -490,54 +489,54 @@ const Roadmap = () => {
                 <div className="printable-content prose dark:prose-invert max-w-none text-gray-800 dark:text-white">
                   <ReactMarkdown
                     components={{
-                      h1: ({node, ...props}) => (
+                      h1: ({ node, ...props }) => (
                         <h1 className="text-3xl font-bold mb-6 border-b pb-2" {...props} />
                       ),
-                      h2: ({node, ...props}) => (
+                      h2: ({ node, ...props }) => (
                         <h2 className="text-2xl font-semibold mt-8 mb-4" {...props} />
                       ),
-                      h3: ({node, ...props}) => (
+                      h3: ({ node, ...props }) => (
                         <h3 className="text-xl font-medium mt-6 mb-3" {...props} />
                       ),
-                      p: ({node, ...props}) => (
+                      p: ({ node, ...props }) => (
                         <p className="mb-4 leading-relaxed" {...props} />
                       ),
-                      ul: ({node, ...props}) => (
+                      ul: ({ node, ...props }) => (
                         <ul className="list-disc pl-8 mb-6" {...props} />
                       ),
-                      ol: ({node, ...props}) => (
+                      ol: ({ node, ...props }) => (
                         <ol className="list-decimal pl-8 mb-6" {...props} />
                       ),
-                      li: ({node, ...props}) => (
+                      li: ({ node, ...props }) => (
                         <li className="mb-2" {...props} />
                       ),
-                      table: ({node, ...props}) => (
+                      table: ({ node, ...props }) => (
                         <div className="overflow-auto mb-6">
                           <table className="min-w-full" {...props} />
                         </div>
                       ),
-                      th: ({node, ...props}) => (
+                      th: ({ node, ...props }) => (
                         <th className="px-4 py-2 border bg-gray-100 dark:bg-slate-700 font-semibold" {...props} />
                       ),
-                      td: ({node, ...props}) => (
+                      td: ({ node, ...props }) => (
                         <td className="px-4 py-2 border" {...props} />
                       ),
-                      a: ({node, ...props}) => (
+                      a: ({ node, ...props }) => (
                         <a className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline" {...props} />
                       ),
-                      code: ({node, ...props}) => (
+                      code: ({ node, ...props }) => (
                         <code className="bg-gray-100 dark:bg-slate-700 px-2 py-1 rounded font-mono text-sm" {...props} />
                       ),
-                      pre: ({node, ...props}) => (
+                      pre: ({ node, ...props }) => (
                         <pre className="bg-gray-100 dark:bg-slate-700 p-4 rounded mb-6 overflow-auto" {...props} />
                       ),
-                      blockquote: ({node, ...props}) => (
+                      blockquote: ({ node, ...props }) => (
                         <blockquote className="border-l-4 border-gray-300 dark:border-slate-600 pl-4 italic text-gray-600 dark:text-gray-300 mb-6" {...props} />
                       ),
-                      img: ({node, ...props}) => (
+                      img: ({ node, ...props }) => (
                         <img className="my-6 rounded-lg max-w-full" {...props} />
                       ),
-                      hr: ({node, ...props}) => (
+                      hr: ({ node, ...props }) => (
                         <hr className="my-8 border-gray-200 dark:border-slate-700" {...props} />
                       )
                     }}
@@ -551,18 +550,17 @@ const Roadmap = () => {
                 {/* Enhanced Roadmaps List - Now visible on mobile */}
                 <div className="space-y-4 pr-4 border-r border-gray-100 dark:border-slate-700">
                   <div
-                    className={`p-4 bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-lg transition-all border ${
-                      showAllRoadmaps 
-                        ? 'border-blue-500 dark:border-blue-400' 
-                        : 'border-gray-100 dark:border-slate-700'
-                    } cursor-pointer`}
+                    className={`p-4 bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-lg transition-all border ${showAllRoadmaps
+                      ? 'border-blue-500 dark:border-blue-400'
+                      : 'border-gray-100 dark:border-slate-700'
+                      } cursor-pointer`}
                     onClick={() => setShowAllRoadmaps(true)}
                   >
                     <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
                       All Roadmaps
                     </h3>
                   </div>
-                  
+
                   {filteredRoadmaps.length === 0 ? (
                     <div className="text-center py-12">
                       <div className="text-gray-600 dark:text-gray-300 text-xl mb-4">
@@ -576,11 +574,10 @@ const Roadmap = () => {
                         whileHover={{ scale: 1.02 }}
                         className="group relative"
                       >
-                        <div className={`p-4 bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-lg transition-all border ${
-                          selectedPdf === roadmap.roadmaplink 
-                            ? 'border-blue-500 dark:border-blue-400' 
-                            : 'border-gray-100 dark:border-slate-700'
-                        }`}>
+                        <div className={`p-4 bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-lg transition-all border ${selectedPdf === roadmap.roadmaplink
+                          ? 'border-blue-500 dark:border-blue-400'
+                          : 'border-gray-100 dark:border-slate-700'
+                          }`}>
                           <div className="flex justify-between items-center">
                             <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
                               <a
@@ -630,7 +627,7 @@ const Roadmap = () => {
                           <XMarkIcon className="w-6 h-6 text-gray-500 dark:text-gray-400" />
                         </button>
                         {selectedPdf && (
-                          <iframe 
+                          <iframe
                             src={getPdfPreviewUrl(selectedPdf)}
                             className="w-full h-full rounded-2xl"
                             frameBorder="0"
@@ -652,11 +649,10 @@ const Roadmap = () => {
                           whileHover={{ scale: 1.02 }}
                           className="group relative"
                         >
-                          <div className={`p-6 bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-lg transition-all border ${
-                            selectedPdf === roadmap.roadmaplink 
-                              ? 'border-blue-500 dark:border-blue-400' 
-                              : 'border-gray-100 dark:border-slate-700'
-                          }`}>
+                          <div className={`p-6 bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-lg transition-all border ${selectedPdf === roadmap.roadmaplink
+                            ? 'border-blue-500 dark:border-blue-400'
+                            : 'border-gray-100 dark:border-slate-700'
+                            }`}>
                             <div className="flex justify-between items-center mb-4">
                               <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
                                 <a
@@ -701,7 +697,7 @@ const Roadmap = () => {
                         <XMarkIcon className="w-6 h-6 text-gray-500 dark:text-gray-900" />
                       </button>
                       {selectedPdf ? (
-                        <iframe 
+                        <iframe
                           src={getPdfPreviewUrl(selectedPdf)}
                           className="w-full h-[calc(100vh-12rem)] rounded-2xl"
                           frameBorder="0"

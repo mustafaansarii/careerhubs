@@ -1,4 +1,4 @@
-import config from '../../config';
+
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import NavBar from '../../components/NavBar';
@@ -13,18 +13,18 @@ import { Helmet } from 'react-helmet';
 const SavedTemplates = () => {
   const [savedTemplates, setSavedTemplates] = useState([]);
   const [loading, setLoading] = useState(true);
-  const api = config.Backend_Api;
+
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem('access_token');
-        
-        const savedResponse = await axios.get(`${api}/api/resume/resumes/`, {
+
+        const savedResponse = await axios.get('/api/resume/resumes/', {
           headers: { Authorization: `Bearer ${token}` }
         });
-        
+
         setSavedTemplates(savedResponse.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -39,7 +39,7 @@ const SavedTemplates = () => {
     };
 
     fetchData();
-  }, [api, navigate]);
+  }, [navigate]);
 
   const handleEditResume = async (templateId) => {
     try {
@@ -65,13 +65,13 @@ const SavedTemplates = () => {
     try {
       const token = localStorage.getItem('access_token');
       const savedTemplate = savedTemplates.find(t => t.template.template_id === templateId);
-      
+
       if (!savedTemplate) {
         toast.error('Template not found');
         return;
       }
 
-      await axios.delete(`${api}/api/resume/delete-resume/`, {
+      await axios.delete('/api/resume/delete-resume/', {
         headers: { Authorization: `Bearer ${token}` },
         data: { resume_id: savedTemplate.id }
       });
@@ -124,14 +124,14 @@ const SavedTemplates = () => {
         </div>
 
         <div className="text-center mb-6 sm:mb-10">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r dark:from-blue-600 dark:to-white bg-clip-text text-transparent from-blue-600 to-gray-900 leading-tight">
-              Saved Resume Templates
-            </h1>
-            <p className="mt-2 sm:mt-3 text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Manage and edit your saved resume templates.
-            </p>
-          </div>
-        
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r dark:from-blue-600 dark:to-white bg-clip-text text-transparent from-blue-600 to-gray-900 leading-tight">
+            Saved Resume Templates
+          </h1>
+          <p className="mt-2 sm:mt-3 text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            Manage and edit your saved resume templates.
+          </p>
+        </div>
+
         {loading ? (
           <SkeletonLoader />
         ) : savedTemplates.length === 0 ? (
@@ -174,7 +174,7 @@ const SavedTemplates = () => {
                       <DocumentIcon className="w-3.5 h-3.5 mr-1.5 flex-shrink-0" />
                       <span className="truncate">Edit</span>
                     </a>
-                   
+
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}

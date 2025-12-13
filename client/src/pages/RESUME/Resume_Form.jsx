@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import config from "../../config";
 import { Link, useParams } from "react-router-dom";
 import { FaSync, FaSpinner } from "react-icons/fa";
 import { defaultFormData, generateLatexCode } from "../../templates/resume/BasicTemplate";
@@ -47,9 +46,9 @@ export default function Resume_Form() {
 
     try {
       const accessToken = localStorage.getItem('access_token');
-      
+
       // Keep only the compile API call
-      const res = await fetch(`${config.Backend_Api}/api/resume/compile/`, {
+      const res = await fetch('/api/resume/compile/', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -57,12 +56,12 @@ export default function Resume_Form() {
         },
         body: JSON.stringify({ code: generateLatexCode(formData) })
       });
-      
+
       if (!res.ok) {
         const errorData = await res.json();
         throw new Error(errorData.message || 'Compilation failed. Please check your LaTeX code.');
       }
-      
+
       const blob = await res.blob();
       setPdfBlobUrl(URL.createObjectURL(blob));
       clearTimeout(timeout);
@@ -122,38 +121,38 @@ export default function Resume_Form() {
 
   const renderNavigation = () => (
     <div className="w-full md:w-48 flex flex-col space-y-2 p-2 border-r dark:border-gray-700">
-      <button 
-        onClick={() => setActiveSection('profile')} 
+      <button
+        onClick={() => setActiveSection('profile')}
         className={`p-2 text-left dark:text-white ${activeSection === 'profile' ? 'bg-blue-100 dark:bg-blue-800' : 'hover:bg-blue-50 dark:hover:bg-blue-900'}`}
       >
         Profile
       </button>
-      <button 
-        onClick={() => setActiveSection('education')} 
+      <button
+        onClick={() => setActiveSection('education')}
         className={`p-2 text-left dark:text-white ${activeSection === 'education' ? 'bg-blue-100 dark:bg-blue-800' : 'hover:bg-blue-50 dark:hover:bg-blue-900'}`}
       >
         Education
       </button>
-      <button 
-        onClick={() => setActiveSection('experience')} 
+      <button
+        onClick={() => setActiveSection('experience')}
         className={`p-2 text-left dark:text-white ${activeSection === 'experience' ? 'bg-blue-100 dark:bg-blue-800' : 'hover:bg-blue-50 dark:hover:bg-blue-900'}`}
       >
         Experience
       </button>
-      <button 
-        onClick={() => setActiveSection('skills')} 
+      <button
+        onClick={() => setActiveSection('skills')}
         className={`p-2 text-left dark:text-white ${activeSection === 'skills' ? 'bg-blue-100 dark:bg-blue-800' : 'hover:bg-blue-50 dark:hover:bg-blue-900'}`}
       >
         Skills
       </button>
-      <button 
-        onClick={() => setActiveSection('projects')} 
+      <button
+        onClick={() => setActiveSection('projects')}
         className={`p-2 text-left dark:text-white ${activeSection === 'projects' ? 'bg-blue-100 dark:bg-blue-800' : 'hover:bg-blue-50 dark:hover:bg-blue-900'}`}
       >
         Projects
       </button>
-      <button 
-        onClick={() => setActiveSection('achievements')} 
+      <button
+        onClick={() => setActiveSection('achievements')}
         className={`p-2 text-left dark:text-white ${activeSection === 'achievements' ? 'bg-blue-100 dark:bg-blue-800' : 'hover:bg-blue-50 dark:hover:bg-blue-900'}`}
       >
         Achievements
@@ -162,57 +161,57 @@ export default function Resume_Form() {
   );
 
   const renderProfileSection = () => {
-    const isFormValid = formData.profile.name && 
-                        formData.profile.address && 
-                        formData.profile.email && 
-                        formData.profile.phone && 
-                        formData.profile.linkedin && 
-                        formData.profile.github;
+    const isFormValid = formData.profile.name &&
+      formData.profile.address &&
+      formData.profile.email &&
+      formData.profile.phone &&
+      formData.profile.linkedin &&
+      formData.profile.github;
 
     return (
       <div className="space-y-4">
         <h2 className="text-xl font-bold dark:text-white">Personal Information</h2>
-        <InputField 
-          label="Full Name" 
-          value={formData.profile.name} 
-          onChange={(e) => handleArrayInputChange('profile', null, 'name', e.target.value)} 
-          placeholder="Enter your full name" 
-          required 
+        <InputField
+          label="Full Name"
+          value={formData.profile.name}
+          onChange={(e) => handleArrayInputChange('profile', null, 'name', e.target.value)}
+          placeholder="Enter your full name"
+          required
         />
-        <InputField 
-          label="Address" 
-          value={formData.profile.address} 
-          onChange={(e) => handleArrayInputChange('profile', null, 'address', e.target.value)} 
-          placeholder="Enter your address" 
-          required 
+        <InputField
+          label="Address"
+          value={formData.profile.address}
+          onChange={(e) => handleArrayInputChange('profile', null, 'address', e.target.value)}
+          placeholder="Enter your address"
+          required
         />
-        <InputField 
-          label="Email" 
-          value={formData.profile.email} 
-          onChange={(e) => handleArrayInputChange('profile', null, 'email', e.target.value)} 
-          placeholder="Enter your email" 
-          required 
+        <InputField
+          label="Email"
+          value={formData.profile.email}
+          onChange={(e) => handleArrayInputChange('profile', null, 'email', e.target.value)}
+          placeholder="Enter your email"
+          required
         />
-        <InputField 
-          label="Phone Number" 
-          value={formData.profile.phone} 
-          onChange={(e) => handleArrayInputChange('profile', null, 'phone', e.target.value)} 
-          placeholder="Enter your phone number" 
-          required 
+        <InputField
+          label="Phone Number"
+          value={formData.profile.phone}
+          onChange={(e) => handleArrayInputChange('profile', null, 'phone', e.target.value)}
+          placeholder="Enter your phone number"
+          required
         />
-        <InputField 
-          label="LinkedIn Username" 
-          value={formData.profile.linkedin} 
-          onChange={(e) => handleArrayInputChange('profile', null, 'linkedin', e.target.value)} 
-          placeholder="Enter your LinkedIn username" 
-          required 
+        <InputField
+          label="LinkedIn Username"
+          value={formData.profile.linkedin}
+          onChange={(e) => handleArrayInputChange('profile', null, 'linkedin', e.target.value)}
+          placeholder="Enter your LinkedIn username"
+          required
         />
-        <InputField 
-          label="GitHub Username" 
-          value={formData.profile.github} 
-          onChange={(e) => handleArrayInputChange('profile', null, 'github', e.target.value)} 
-          placeholder="Enter your GitHub username" 
-          required 
+        <InputField
+          label="GitHub Username"
+          value={formData.profile.github}
+          onChange={(e) => handleArrayInputChange('profile', null, 'github', e.target.value)}
+          placeholder="Enter your GitHub username"
+          required
         />
         {!isFormValid && (
           <p className="text-red-500 text-sm">All fields in the Personal Information section are required.</p>
@@ -258,7 +257,7 @@ export default function Resume_Form() {
               <InputField label="Company" value={exp.company} onChange={(e) => handleArrayInputChange('experience', index, 'company', e.target.value)} placeholder="e.g. Google" />
               <InputField label="Title" value={exp.title} onChange={(e) => handleArrayInputChange('experience', index, 'title', e.target.value)} placeholder="e.g. Software Engineer" />
               <InputField label="Location" value={exp.location} onChange={(e) => handleArrayInputChange('experience', index, 'location', e.target.value)} placeholder="e.g. Mountain View, CA" />
-          <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 <InputField label="Start Date" value={exp.startDate} onChange={(e) => handleArrayInputChange('experience', index, 'startDate', e.target.value)} placeholder="e.g. 2020-01-01" />
                 <InputField label="End Date" value={exp.endDate} onChange={(e) => handleArrayInputChange('experience', index, 'endDate', e.target.value)} placeholder="e.g. 2022-12-31 or Present" />
               </div>
@@ -278,7 +277,7 @@ export default function Resume_Form() {
                     >
                       Remove
                     </button>
-          </div>
+                  </div>
                 ))}
                 <button
                   onClick={() => handleAddResponsibility(index)}
@@ -286,7 +285,7 @@ export default function Resume_Form() {
                 >
                   Add Responsibility
                 </button>
-          </div>
+              </div>
             </>
           )}
         </div>
@@ -321,8 +320,8 @@ export default function Resume_Form() {
                   </svg>
                 )}
               </button>
-              <button 
-                onClick={() => handleArrayInputChange('education', index, null, null)} 
+              <button
+                onClick={() => handleArrayInputChange('education', index, null, null)}
                 className="text-red-500"
               >
                 Remove
@@ -336,9 +335,9 @@ export default function Resume_Form() {
               <InputField label="Degree" value={edu.degree} onChange={(e) => handleArrayInputChange('education', index, 'degree', e.target.value)} placeholder="e.g. Bachelor of Science" />
               <InputField label="Field of Study" value={edu.fieldOfStudy} onChange={(e) => handleArrayInputChange('education', index, 'fieldOfStudy', e.target.value)} placeholder="e.g. Computer Science" />
               <div className="grid grid-cols-2 gap-4">
-                <InputField 
-                  label="GPA Type" 
-                  value={edu.gpaType} 
+                <InputField
+                  label="GPA Type"
+                  value={edu.gpaType}
                   onChange={(e) => handleArrayInputChange('education', index, 'gpaType', e.target.value)}
                   isSelect
                   options={[
@@ -347,17 +346,17 @@ export default function Resume_Form() {
                     { value: 'Grade', label: 'Grade' }
                   ]}
                 />
-                <InputField 
-                  label={edu.gpaType || "GPA Value"} 
-                  value={edu.gpa} 
+                <InputField
+                  label={edu.gpaType || "GPA Value"}
+                  value={edu.gpa}
                   onChange={(e) => handleArrayInputChange('education', index, 'gpa', e.target.value)}
                   placeholder={`Enter ${edu.gpaType || 'GPA'}`}
                 />
               </div>
-          <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 <InputField label="Start Date" value={edu.startDate} onChange={(e) => handleArrayInputChange('education', index, 'startDate', e.target.value)} placeholder="e.g. 2016-09-01" />
                 <InputField label="End Date" value={edu.endDate} onChange={(e) => handleArrayInputChange('education', index, 'endDate', e.target.value)} placeholder="e.g. 2020-06-01" />
-          </div>
+              </div>
             </>
           )}
         </div>
@@ -399,15 +398,15 @@ export default function Resume_Form() {
           </div>
           {expandedSections.skills === index && (
             <>
-              <InputField 
-                label="Category Name" 
-                value={skill.category} 
+              <InputField
+                label="Category Name"
+                value={skill.category}
                 onChange={(e) => handleArrayInputChange('skills', index, 'category', e.target.value)}
                 placeholder="e.g. Languages, Coursework"
               />
-              <InputField 
-                label="Skills (comma separated)" 
-                value={skill.details} 
+              <InputField
+                label="Skills (comma separated)"
+                value={skill.details}
                 onChange={(e) => handleArrayInputChange('skills', index, 'details', e.target.value)}
                 placeholder="e.g. Java, Python, JavaScript"
               />
@@ -582,7 +581,7 @@ export default function Resume_Form() {
             [section]: prev[section].filter((_, i) => i !== index)
           };
         }
-        
+
         // Handle field update
         const newSection = [...prev[section]];
         if (Array.isArray(newSection[index][field])) {
@@ -693,7 +692,7 @@ export default function Resume_Form() {
     <div className="flex h-screen w-full flex-col bg-white dark:bg-gray-900">
       {/* Top Navbar */}
       <div className="w-full max-w-[1300px] mx-auto py-1 px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-       
+
         {/* Nav Buttons */}
         <div className="w-full sm:w-auto">
           <div className="flex items-center justify-center sm:justify-start gap-2 sm:gap-4 flex-wrap">
@@ -720,7 +719,7 @@ export default function Resume_Form() {
 
         {/* Recompile Button */}
         <div className="w-full sm:w-auto relative group">
-          <button 
+          <button
             onClick={compileLatex}
             disabled={isCompiling}
             className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 px-3 py-1.5 text-sm text-white hover:from-blue-700 hover:to-indigo-700 disabled:opacity-70 transition-all duration-200 shadow-md hover:shadow-lg"
@@ -737,11 +736,11 @@ export default function Resume_Form() {
               </>
             )}
           </button>
-          
+
         </div>
 
         {/* Add Clear Button */}
-        <button 
+        <button
           onClick={handleClearForm}
           className="bg-red-500 text-white px-3 py-1.5 rounded-md"
         >
@@ -753,7 +752,7 @@ export default function Resume_Form() {
       {/* Main Content */}
       <div className={`flex flex-1 flex-col ${isMobile ? '' : 'md:flex-row'}`}>
         {!isMobile && renderNavigation()}
-        
+
         {/* Left: Form */}
         <div className="w-full md:flex-1 overflow-y-auto p-4">
           {activeSection === 'profile' && renderProfileSection()}
@@ -789,8 +788,8 @@ export default function Resume_Form() {
                     </a>
                   </div>
                 ) : (
-                  <iframe 
-                    src={pdfBlobUrl} 
+                  <iframe
+                    src={pdfBlobUrl}
                     className="h-full w-full"
                     title="PDF Preview"
                     onLoad={handlePdfLoad}
@@ -821,8 +820,8 @@ const InputField = ({ label, value, onChange, isTextarea = false, isSelect = fal
       />
     ) : isSelect ? (
       <select
-      value={value}
-      onChange={onChange}
+        value={value}
+        onChange={onChange}
         className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-white"
       >
         {options.map(option => (

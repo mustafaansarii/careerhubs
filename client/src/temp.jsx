@@ -3,7 +3,6 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
-import config from './config';
 import { useState, useEffect } from 'react';
 
 const useCalculatorContent = () => {
@@ -19,7 +18,7 @@ const useCalculatorContent = () => {
         setIsLoading(true);
         setError(null);
 
-        fetch(`${config.Backend_Api}/api/careerhub/api/generate/`, {
+        fetch('/api/careerhub/api/generate/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -31,15 +30,15 @@ const useCalculatorContent = () => {
                 mobile_optimized: true
             })
         })
-        .then(response => response.json())
-        .then(data => {
-            setContent(data.response);
-            setIsLoading(false);
-        })
-        .catch(err => {
-            setError(err.message);
-            setIsLoading(false);
-        });
+            .then(response => response.json())
+            .then(data => {
+                setContent(data.response);
+                setIsLoading(false);
+            })
+            .catch(err => {
+                setError(err.message);
+                setIsLoading(false);
+            });
     }, []);
 
     return { content, isLoading, error };
@@ -51,7 +50,7 @@ const CalculatorContent = () => {
     const handleCopyCode = (code, language, button) => {
         const originalText = button.textContent;
         const originalClass = button.className;
-        
+
         const showCopySuccess = () => {
             button.textContent = '✅ Copied!';
             button.classList.add('bg-green-500', 'dark:bg-green-600');
@@ -111,7 +110,7 @@ const CalculatorContent = () => {
                                         </div>
                                         <button
                                             onClick={(e) => handleCopyCode(
-                                                String(children).replace(/\n$/, ""), 
+                                                String(children).replace(/\n$/, ""),
                                                 language,
                                                 e.currentTarget
                                             )}
@@ -120,15 +119,17 @@ const CalculatorContent = () => {
                                             Copy
                                         </button>
                                     </div>
-                                    <SyntaxHighlighter 
-                                        style={vscDarkPlus} 
+                                    <SyntaxHighlighter
+                                        style={vscDarkPlus}
                                         language={language.toLowerCase()}
                                         showLineNumbers={!isMobile}
                                         wrapLines={false}
-                                        lineProps={{ style: { 
-                                            whiteSpace: 'pre',
-                                            fontSize: isMobile ? '0.7rem' : '0.8rem'
-                                        }}}
+                                        lineProps={{
+                                            style: {
+                                                whiteSpace: 'pre',
+                                                fontSize: isMobile ? '0.7rem' : '0.8rem'
+                                            }
+                                        }}
                                         customStyle={{
                                             borderRadius: '0.5rem',
                                             padding: isMobile ? '0.75rem 0.5rem' : '1rem',

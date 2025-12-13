@@ -4,7 +4,6 @@ import { ChevronDownIcon, StarIcon, LinkIcon, HomeIcon, CheckIcon } from '@heroi
 import { useState, useEffect, useCallback } from 'react'
 import NavBar from '../components/NavBar'
 import Footer from '../components/Footer'
-import config from '../config'
 import useSWR from 'swr'
 import { Link, useNavigate } from 'react-router-dom'
 import { FaHome } from 'react-icons/fa';
@@ -37,7 +36,7 @@ export default function DSAPage() {
     throw error;
   }), [accessToken, navigate]);
 
-  const { data: questions, mutate } = useSWR(`${config.Backend_Api}/api/careerhub/questions/`, fetcher, {
+  const { data: questions, mutate } = useSWR('/api/careerhub/questions/', fetcher, {
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
     refreshWhenOffline: false,
@@ -97,14 +96,14 @@ export default function DSAPage() {
   const toggleFavorite = useCallback(async (id) => {
     setLoadingFavorite(id);
     try {
-      const response = await fetch(`${config.Backend_Api}/api/careerhub/questions/${id}/toggle_favorite/`, {
+      const response = await fetch(`/api/careerhub/questions/${id}/toggle_favorite/`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json'
         }
       });
-      
+
       if (response.status === 401) {
         localStorage.removeItem('access_token');
         toast.error('Session expired, please login again.');
@@ -115,15 +114,15 @@ export default function DSAPage() {
       if (!response.ok) {
         throw new Error('Failed to toggle favorite');
       }
-      
+
       const data = await response.json();
       console.log('Favorite toggled successfully:', data);
-      
+
       // Optimistic UI update
-      mutate(questions.map(question => 
+      mutate(questions.map(question =>
         question.id === id ? { ...question, is_favorite: !question.is_favorite } : question
       ), false);
-      
+
     } catch (error) {
       console.error('Error toggling favorite:', error);
     } finally {
@@ -134,7 +133,7 @@ export default function DSAPage() {
   const toggleCompleted = useCallback(async (id) => {
     setLoadingComplete(id);
     try {
-      const response = await fetch(`${config.Backend_Api}/api/careerhub/questions/${id}/toggle_done/`, {
+      const response = await fetch(`/api/careerhub/questions/${id}/toggle_done/`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${accessToken}`,
@@ -148,19 +147,19 @@ export default function DSAPage() {
         window.location.href = '/login';
         return;
       }
-      
+
       if (!response.ok) {
         throw new Error('Failed to toggle completed status');
       }
-      
+
       const data = await response.json();
       console.log('Completion status toggled successfully:', data);
-      
+
       // Optimistic UI update
-      mutate(questions.map(question => 
+      mutate(questions.map(question =>
         question.id === id ? { ...question, is_done: !question.is_done } : question
       ), false);
-      
+
     } catch (error) {
       console.error('Error toggling completed status:', error);
     } finally {
@@ -244,7 +243,7 @@ export default function DSAPage() {
             <li>
               <div className="flex items-center">
                 <svg className="w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4"/>
+                  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4" />
                 </svg>
                 <span className="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">DSA</span>
               </div>
@@ -252,7 +251,7 @@ export default function DSAPage() {
           </ol>
         </nav>
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          
+
 
           {/* Global Progress */}
           <div className="mb-8">
@@ -266,7 +265,7 @@ export default function DSAPage() {
           </div>
 
           {/* Description */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ type: 'spring', stiffness: 100 }}
@@ -293,9 +292,9 @@ export default function DSAPage() {
                   viewport={{ once: true }}
                   className="group relative p-4 sm:p-5 rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-md transition-all cursor-pointer"
                   onClick={() => {
-                    setActiveTopics(prev => 
-                      prev.includes(index) 
-                        ? prev.filter(i => i !== index) 
+                    setActiveTopics(prev =>
+                      prev.includes(index)
+                        ? prev.filter(i => i !== index)
                         : [...prev, index]
                     );
                   }}
@@ -315,7 +314,7 @@ export default function DSAPage() {
                       </div>
                       {activeTopics.includes(index) && (
                         <div className="mt-4 overflow-x-auto">
-                          <table 
+                          <table
                             className="w-full text-xs sm:text-sm text-left text-gray-500 dark:text-gray-400 cursor-default"
                             onClick={(e) => e.stopPropagation()}
                           >
@@ -337,27 +336,26 @@ export default function DSAPage() {
                                     {question.title}
                                   </td>
                                   <td className="px-2 py-2">
-                                    <span className={`px-2 py-1 text-xs rounded-full ${
-                                      question.difficulty === 'Beginner' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300' :
+                                    <span className={`px-2 py-1 text-xs rounded-full ${question.difficulty === 'Beginner' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300' :
                                       question.difficulty === 'Easy' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' :
-                                      question.difficulty === 'Medium' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300' :
-                                      'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
-                                    }`}>
+                                        question.difficulty === 'Medium' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300' :
+                                          'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
+                                      }`}>
                                       {question.difficulty}
                                     </span>
                                   </td>
                                   <td className="px-2 py-2">
-                                    <a 
-                                      href={question.link} 
-                                      target="_blank" 
+                                    <a
+                                      href={question.link}
+                                      target="_blank"
                                       rel="noopener noreferrer"
                                       onClick={(e) => e.stopPropagation()}
                                       className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
                                     >
-                                      <img 
-                                        src={question.link?.includes("leetcode") ? "https://codolio.com/icons/leetcode_dark.png" : "https://media.geeksforgeeks.org/gfg-gg-logo.svg"} 
-                                        alt={question.link?.includes("leetcode") ? "LeetCode" : "GeeksforGeeks"} 
-                                        className="h-6 w-6" 
+                                      <img
+                                        src={question.link?.includes("leetcode") ? "https://codolio.com/icons/leetcode_dark.png" : "https://media.geeksforgeeks.org/gfg-gg-logo.svg"}
+                                        alt={question.link?.includes("leetcode") ? "LeetCode" : "GeeksforGeeks"}
+                                        className="h-6 w-6"
                                       />
                                     </a>
                                   </td>
@@ -368,11 +366,10 @@ export default function DSAPage() {
                                         toggleCompleted(question.id);
                                       }}
                                       disabled={loadingComplete === question.id}
-                                      className={`p-1 rounded transition-colors cursor-pointer ${
-                                        question.is_done 
-                                          ? 'text-green-500 hover:text-green-600 dark:text-green-400 dark:hover:text-green-300'
-                                          : 'text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400'
-                                      }`}
+                                      className={`p-1 rounded transition-colors cursor-pointer ${question.is_done
+                                        ? 'text-green-500 hover:text-green-600 dark:text-green-400 dark:hover:text-green-300'
+                                        : 'text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400'
+                                        }`}
                                     >
                                       {loadingComplete === question.id ? (
                                         <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
@@ -390,7 +387,7 @@ export default function DSAPage() {
                                     </button>
                                   </td>
                                   <td className="px-2 py-2">
-                                    <button 
+                                    <button
                                       onClick={(e) => {
                                         e.stopPropagation();
                                         toggleFavorite(question.id);
@@ -412,9 +409,8 @@ export default function DSAPage() {
                         </div>
                       )}
                     </div>
-                    <ChevronDownIcon className={`h-5 w-5 text-gray-400 dark:text-gray-300 ml-3 flex-shrink-0 transition-transform chevron-icon ${
-                      activeTopics.includes(index) ? 'rotate-180' : ''
-                    }`} />
+                    <ChevronDownIcon className={`h-5 w-5 text-gray-400 dark:text-gray-300 ml-3 flex-shrink-0 transition-transform chevron-icon ${activeTopics.includes(index) ? 'rotate-180' : ''
+                      }`} />
                   </div>
                 </motion.div>
               )

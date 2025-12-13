@@ -1,7 +1,6 @@
 import axios from 'axios';
-import config from  "../config"
 
-const API_URL = config.Backend_Api + '/api/auth';
+const API_URL = '/api/auth';
 
 // Send OTP
 const sendOTP = async (email) => {
@@ -59,7 +58,7 @@ const refreshToken = async () => {
   try {
     const refresh = getCookie('refresh_token');
     if (!refresh) throw new Error('No refresh token found');
-    
+
     const response = await axios.post(`${API_URL}/token/refresh/`, { refresh });
     setAuthCookies(response.data.access, refresh);
     return response.data.access;
@@ -155,7 +154,7 @@ const logout = () => {
     // Clear cookies
     document.cookie = 'access_token=; path=/; max-age=0; SameSite=Strict; Secure';
     document.cookie = 'refresh_token=; path=/; max-age=0; SameSite=Strict; Secure';
-    
+
     // Clear localStorage
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
@@ -165,14 +164,14 @@ const logout = () => {
   }
 };
 
-export { 
-  sendOTP, 
-  signup, 
-  login, 
+export {
+  sendOTP,
+  signup,
+  login,
   logout,
-  sendOTPForgetPass, 
-  resetPassword, 
-  googleLogin, 
+  sendOTPForgetPass,
+  resetPassword,
+  googleLogin,
   googleSignup,
   refreshToken,
   getCookie

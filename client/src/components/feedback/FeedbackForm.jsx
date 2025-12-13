@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { TextField, Button, Box, Slider, FormControl, FormLabel } from '@mui/material';
 import toast from 'react-hot-toast';
-import config from '../../config';
 import axios from 'axios';
 import CircularProgress from '@mui/material/CircularProgress';
 
@@ -24,9 +23,9 @@ const FeedbackForm = ({ onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    
+
     try {
-      const response = await axios.post(`${config.Backend_Api}/api/careerhub/api/feedback/`, {
+      const response = await axios.post('/api/careerhub/api/feedback/', {
         fullname: formData.fullName,
         email: formData.email,
         rating: formData.rating,
@@ -39,7 +38,7 @@ const FeedbackForm = ({ onClose }) => {
       localStorage.setItem('feedbackGiven', 'true');
       onClose();
       setLoading(false);
-      
+
     } catch (error) {
       console.error('Error submitting feedback:', error);
       toast.error('Failed to submit feedback. Please try again.', {

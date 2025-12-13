@@ -5,7 +5,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaHome, FaLock, FaEnvelope, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
-import config from '../config';
 
 const Login = () => {
   const [credentials, setCredentials] = useState({
@@ -39,7 +38,7 @@ const Login = () => {
 
   const handleGoogleLogin = async () => {
     try {
-      window.location.href = `${config.Backend_Api}${config.GoogleLoginUrl}`;
+      window.location.href = "/api/auth/google/login/"
     } catch (error) {
       toast.error('Google login failed');
     }
@@ -56,7 +55,7 @@ const Login = () => {
           <span className="text-sm text-blue-500">Login</span>
         </Link>
       </div>
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -76,9 +75,9 @@ const Login = () => {
           onClick={handleGoogleLogin}
           className="w-full flex justify-center items-center py-3 px-4 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
-          <img 
-            src="https://www.google.com/favicon.ico" 
-            alt="Google logo" 
+          <img
+            src="https://www.google.com/favicon.ico"
+            alt="Google logo"
             className="w-5 h-5 mr-2"
           />
           Continue with Google
@@ -109,7 +108,7 @@ const Login = () => {
                   type="email"
                   placeholder="Enter your email"
                   value={credentials.email}
-                  onChange={(e) => setCredentials({...credentials, email: e.target.value})}
+                  onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
                   className="w-full pl-10 pr-4 py-3 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700/50 dark:text-white transition-all"
                   required
                 />
@@ -128,7 +127,7 @@ const Login = () => {
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter your password"
                   value={credentials.password}
-                  onChange={(e) => setCredentials({...credentials, password: e.target.value})}
+                  onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
                   className="w-full pl-10 pr-12 py-3 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700/50 dark:text-white transition-all"
                   required
                 />
@@ -165,16 +164,16 @@ const Login = () => {
 
         <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
           Don't have an account?{' '}
-          <Link 
-            to="/register" 
+          <Link
+            to="/register"
             className="font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 hover:underline"
           >
             Create account
           </Link>
         </p>
         <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
-          <Link 
-            to="/forgot-password" 
+          <Link
+            to="/forgot-password"
             className="font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 hover:underline"
           >
             Forgot password?

@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { sendOTP, signup, login, sendOTPForgetPass, resetPassword, googleLogin, googleSignup, refreshToken, getCookie, logout } from './authService';
-import config from '../config';
 const initialState = {
   user: getCookie('access_token') ? { token: getCookie('access_token') } : null,
   loading: false,
@@ -19,7 +18,7 @@ const clearLocalStorageAfterInterval = async () => {
   if (!lastClearTime || (currentTime - lastClearTime) >= TWELVE_HOURS) {
     try {
       if (refreshToken) {
-        const response = await fetch(`${config.Backend_Api}/api/auth/token/refresh/`, {
+        const response = await fetch('/api/auth/token/refresh/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -34,7 +33,7 @@ const clearLocalStorageAfterInterval = async () => {
     } catch (error) {
       localStorage.clear();
     }
-    
+
     localStorage.setItem('lastClearTime', currentTime.toString());
   }
 };
