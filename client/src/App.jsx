@@ -71,7 +71,7 @@ import Resume_Form from './pages/RESUME/Resume_Form'
 
 import InterviewHome from './components/Interview_home'
 import MaintenanceBanner from './components/MaintenanceBanner'
-import Problems from './components/problems'  
+import Problems from './components/problems'
 function App() {
   return (
     <Router>
@@ -82,10 +82,10 @@ function App() {
             <div className="flex flex-col min-h-screen">
               <main className="flex-grow">
                 <NavBar />
-                {/* <MaintenanceBanner /> */}
+                <MaintenanceBanner />
                 <Payment />
                 <Hero />
-                
+
                 <InterviewHome />
                 <FeaturesGrid />
                 <ResourceShowcase />
@@ -98,7 +98,7 @@ function App() {
             </div>
           }
         />
-        <Route path="/saved-templates" element={<ProtectedRoute><SavedTemplates/></ProtectedRoute>} />
+        <Route path="/saved-templates" element={<ProtectedRoute><SavedTemplates /></ProtectedRoute>} />
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
@@ -106,53 +106,53 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/api/auth/google/callback" element={<GoogleCallback />} />
-        <Route path="/resume-builder" element={<ProtectedRoute><TemplateList/></ProtectedRoute>} />
-        <Route path="/resume-ats" element={<ProtectedRoute><Resume_ATS/></ProtectedRoute>} />
-        <Route path="/resume-editor/:templateId" element={<ProtectedRoute><LatexEditor/></ProtectedRoute>} />
-        <Route path="/resume-form" element={<ProtectedRoute><Resume_Form/></ProtectedRoute>} />
-        <Route path="/profile" element={<ProtectedRoute><Profile/></ProtectedRoute>} />
-        <Route path="/dsa-sheet" element={<ProtectedRoute><DSAPage/></ProtectedRoute>} />
-        <Route path="/roadmap" element={<ProtectedRoute><Roadmap/></ProtectedRoute>} />
-        <Route path="/resources" element={<ProtectedRoute><Resources/></ProtectedRoute>} />
-        <Route path="/interview-preparation" element={<ProtectedRoute><InterviewPage/></ProtectedRoute>} />
-        
+        <Route path="/resume-builder" element={<ProtectedRoute><TemplateList /></ProtectedRoute>} />
+        <Route path="/resume-ats" element={<ProtectedRoute><Resume_ATS /></ProtectedRoute>} />
+        <Route path="/resume-editor/:templateId" element={<ProtectedRoute><LatexEditor /></ProtectedRoute>} />
+        <Route path="/resume-form" element={<ProtectedRoute><Resume_Form /></ProtectedRoute>} />
+        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+        <Route path="/dsa-sheet" element={<ProtectedRoute><DSAPage /></ProtectedRoute>} />
+        <Route path="/roadmap" element={<ProtectedRoute><Roadmap /></ProtectedRoute>} />
+        <Route path="/resources" element={<ProtectedRoute><Resources /></ProtectedRoute>} />
+        <Route path="/interview-preparation" element={<ProtectedRoute><InterviewPage /></ProtectedRoute>} />
+
         {/* Core CS Tutorials */}
-        <Route path="/tutorials" element={<ProtectedRoute><Tutorials/></ProtectedRoute>} />
-        <Route path="/tutorials/computer-networks" element={<ProtectedRoute><ComputerNetworksTutorials/></ProtectedRoute>} />
-        <Route path="/tutorials/databases" element={<ProtectedRoute><DatabaseManagementSystemTutorials/></ProtectedRoute>} />
-        <Route path="/tutorials/data-structures" element={<ProtectedRoute><DataStructuresTutorials/></ProtectedRoute>} />
-        <Route path="/tutorials/operating-systems" element={<ProtectedRoute><OperatingSystemsTutorials/></ProtectedRoute>} />
-        <Route path="/tutorials/computer-architecture" element={<ProtectedRoute><ComputerArchitectureTutorials/></ProtectedRoute>} />
+        <Route path="/tutorials" element={<ProtectedRoute><Tutorials /></ProtectedRoute>} />
+        <Route path="/tutorials/computer-networks" element={<ProtectedRoute><ComputerNetworksTutorials /></ProtectedRoute>} />
+        <Route path="/tutorials/databases" element={<ProtectedRoute><DatabaseManagementSystemTutorials /></ProtectedRoute>} />
+        <Route path="/tutorials/data-structures" element={<ProtectedRoute><DataStructuresTutorials /></ProtectedRoute>} />
+        <Route path="/tutorials/operating-systems" element={<ProtectedRoute><OperatingSystemsTutorials /></ProtectedRoute>} />
+        <Route path="/tutorials/computer-architecture" element={<ProtectedRoute><ComputerArchitectureTutorials /></ProtectedRoute>} />
 
         {/* Frameworks Tutorials */}
-        <Route path="/tutorials/django" element={<ProtectedRoute><DjangoTutorials/></ProtectedRoute>} />
-        <Route path="/tutorials/express" element={<ProtectedRoute><ExpressTutorials/></ProtectedRoute>} />
-        <Route path="/tutorials/spring-boot" element={<ProtectedRoute><SpringBootTutorials/></ProtectedRoute>} />
-        <Route path="/tutorials/flask" element={<ProtectedRoute><FlaskTutorials/></ProtectedRoute>} />
-        <Route path="/tutorials/nodejs" element={<ProtectedRoute><NodeTutorials/></ProtectedRoute>} />
-        <Route path="/tutorials/nextjs" element={<ProtectedRoute><NextJSTutorials/></ProtectedRoute>} />
-        <Route path="/tutorials/react" element={<ProtectedRoute><ReactTutorials/></ProtectedRoute>} />
-        <Route path="/tutorials/vue" element={<ProtectedRoute><VueTutorials/></ProtectedRoute>} />
-        <Route path="/tutorials/angular" element={<ProtectedRoute><AngularTutorials/></ProtectedRoute>} />
-        <Route path="/tutorials/html" element={<ProtectedRoute><HtmlTutorials/></ProtectedRoute>} />
-        <Route path="/tutorials/css" element={<ProtectedRoute><CssTutorials/></ProtectedRoute>} />
+        <Route path="/tutorials/django" element={<ProtectedRoute><DjangoTutorials /></ProtectedRoute>} />
+        <Route path="/tutorials/express" element={<ProtectedRoute><ExpressTutorials /></ProtectedRoute>} />
+        <Route path="/tutorials/spring-boot" element={<ProtectedRoute><SpringBootTutorials /></ProtectedRoute>} />
+        <Route path="/tutorials/flask" element={<ProtectedRoute><FlaskTutorials /></ProtectedRoute>} />
+        <Route path="/tutorials/nodejs" element={<ProtectedRoute><NodeTutorials /></ProtectedRoute>} />
+        <Route path="/tutorials/nextjs" element={<ProtectedRoute><NextJSTutorials /></ProtectedRoute>} />
+        <Route path="/tutorials/react" element={<ProtectedRoute><ReactTutorials /></ProtectedRoute>} />
+        <Route path="/tutorials/vue" element={<ProtectedRoute><VueTutorials /></ProtectedRoute>} />
+        <Route path="/tutorials/angular" element={<ProtectedRoute><AngularTutorials /></ProtectedRoute>} />
+        <Route path="/tutorials/html" element={<ProtectedRoute><HtmlTutorials /></ProtectedRoute>} />
+        <Route path="/tutorials/css" element={<ProtectedRoute><CssTutorials /></ProtectedRoute>} />
 
         {/* Languages Tutorials */}
-        <Route path="/tutorials/typescript" element={<ProtectedRoute><TypescriptTutorials/></ProtectedRoute>} />
-        <Route path="/tutorials/c++" element={<ProtectedRoute><CppTutorials/></ProtectedRoute>} />
-        <Route path="/tutorials/javascript" element={<ProtectedRoute><JavascriptTutorials/></ProtectedRoute>} />
-        <Route path="/tutorials/python" element={<ProtectedRoute><PythonTutorials/></ProtectedRoute>} />
-        <Route path="/tutorials/java" element={<ProtectedRoute><JavaTutorials/></ProtectedRoute>} />
+        <Route path="/tutorials/typescript" element={<ProtectedRoute><TypescriptTutorials /></ProtectedRoute>} />
+        <Route path="/tutorials/c++" element={<ProtectedRoute><CppTutorials /></ProtectedRoute>} />
+        <Route path="/tutorials/javascript" element={<ProtectedRoute><JavascriptTutorials /></ProtectedRoute>} />
+        <Route path="/tutorials/python" element={<ProtectedRoute><PythonTutorials /></ProtectedRoute>} />
+        <Route path="/tutorials/java" element={<ProtectedRoute><JavaTutorials /></ProtectedRoute>} />
 
         {/* Data Science & AI Tutorials */}
-        <Route path="/tutorials/data-analysis" element={<ProtectedRoute><DataAnalysisTutorials/></ProtectedRoute>} />
-        <Route path="/tutorials/machine-learning" element={<ProtectedRoute><MachineLearning/></ProtectedRoute>} />
-        <Route path="/tutorials/big-data" element={<ProtectedRoute><BigDataTutorials/></ProtectedRoute>} />
+        <Route path="/tutorials/data-analysis" element={<ProtectedRoute><DataAnalysisTutorials /></ProtectedRoute>} />
+        <Route path="/tutorials/machine-learning" element={<ProtectedRoute><MachineLearning /></ProtectedRoute>} />
+        <Route path="/tutorials/big-data" element={<ProtectedRoute><BigDataTutorials /></ProtectedRoute>} />
 
         {/* Databases Tutorials */}
-        <Route path="/tutorials/mysql" element={<ProtectedRoute><MySQlTutorials/></ProtectedRoute>} />
-        <Route path="/tutorials/postgresql" element={<ProtectedRoute><PostgreSQLTutorials/></ProtectedRoute>} />
-        <Route path="/tutorials/mongodb" element={<ProtectedRoute><MongoDBTutorials/></ProtectedRoute>} />
+        <Route path="/tutorials/mysql" element={<ProtectedRoute><MySQlTutorials /></ProtectedRoute>} />
+        <Route path="/tutorials/postgresql" element={<ProtectedRoute><PostgreSQLTutorials /></ProtectedRoute>} />
+        <Route path="/tutorials/mongodb" element={<ProtectedRoute><MongoDBTutorials /></ProtectedRoute>} />
 
         {/* Catch-all route for undefined paths */}
         <Route path="*" element={<Navigate to="/" />} />
